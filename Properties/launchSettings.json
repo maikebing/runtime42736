@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "runtime42736": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\mysti\\Desktop\\cardblacklist2020092519\\cardblacklist_2020092522.dat\""
+    }
+  }
+}
