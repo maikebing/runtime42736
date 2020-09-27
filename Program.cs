@@ -69,22 +69,22 @@ namespace runtime42736
                         int index = new Random(DateTime.Now.Millisecond).Next(0, head.Total);
                         using (var mmf = MemoryMappedFile.CreateFromFile(fi.FullName, FileMode.Open, "MyFile"))
                         {
-                            using (var cva = mmf.CreateViewAccessor(rawsize, fi.Length - rawsize))
-                            {
-                                var arys = new blackdic[head.Total];
-                                cva.ReadArray<blackdic>(0, arys, 0, head.Total);
-                                var rnd = arys[index];
-                                Console.WriteLine($"Good Value:{rnd.cardhead:0000}{rnd.cardid:000000000000000}");
-                                cva.Dispose();
-                            }
-                            using (var cva = mmf.CreateViewAccessor(rawsize, fi.Length - rawsize))
-                            {
+                            //using (var cva = mmf.CreateViewAccessor(rawsize, fi.Length - rawsize))
+                            //{
+                            //    var arys = new blackdic[head.Total];
+                            //    cva.ReadArray<blackdic>(0, arys, 0, head.Total);
+                            //    var rnd = arys[index];
+                            //    Console.WriteLine($"Good Value:{rnd.cardhead:0000}{rnd.cardid:000000000000000}");
+                            //    cva.Dispose();
+                            //}
+                            //using (var cva = mmf.CreateViewAccessor(rawsize, fi.Length - rawsize))
+                            //{
                               
-                                int bdsize = Marshal.SizeOf<blackdic>();
-                                cva.Read(index * bdsize, out blackdic rnd);
-                                Console.WriteLine($"Good Value:{rnd.cardhead:0000}{rnd.cardid:000000000000000}");
-                                cva.Dispose();
-                            }
+                            //    int bdsize = Marshal.SizeOf<blackdic>();
+                            //    cva.Read(index * bdsize, out blackdic rnd);
+                            //    Console.WriteLine($"Good Value:{rnd.cardhead:0000}{rnd.cardid:000000000000000}");
+                            //    cva.Dispose();
+                            //}
                             using (var cva = mmf.CreateViewAccessor(rawsize, fi.Length - rawsize))
                             {
                                 unsafe
@@ -95,43 +95,7 @@ namespace runtime42736
                                     try
                                     {
                                         ulong length = cva.SafeMemoryMappedViewHandle.ByteLength;
-                                        blackdic* _bd_ptr = (blackdic*)ptr;
-                                        var rnd = _bd_ptr[index];
-                                        Console.WriteLine($"Good Value:{rnd.cardhead:0000}{rnd.cardid:000000000000000}");
-                                    }
-                                    finally
-                                    {
-                                        cva.SafeMemoryMappedViewHandle.ReleasePointer();
-                                    }
-                                    cva.Dispose();
-                                }
-                            }
-                            using (var cva = mmf.CreateViewAccessor(rawsize, fi.Length - rawsize))
-                            {
-                                unsafe
-                                {
-                                    try
-                                    {
-                                        ulong length = cva.SafeMemoryMappedViewHandle.ByteLength;
-                                        blackdic* _bd_ptr =(blackdic*)cva.SafeMemoryMappedViewHandle.DangerousGetHandle().ToPointer();
-                                        var rnd = _bd_ptr[index];
-                                        Console.WriteLine($"Good Value:{rnd.cardhead:0000}{rnd.cardid:000000000000000}");
-                                    }
-                                    finally
-                                    {
-                                        cva.SafeMemoryMappedViewHandle.ReleasePointer();
-                                    }
-                                    cva.Dispose();
-                                }
-                            }
-                            using (var cva = mmf.CreateViewStream(rawsize, fi.Length - rawsize))
-                            {
-                                unsafe
-                                {
-                                    try
-                                    {
-                                        ulong length = cva.SafeMemoryMappedViewHandle.ByteLength;
-                                        blackdic* _bd_ptr = (blackdic*)cva.SafeMemoryMappedViewHandle.DangerousGetHandle().ToPointer();
+                                        blackdic* _bd_ptr = (blackdic*)(ptr +cva.PointerOffset);
                                         var rnd = _bd_ptr[index];
                                         Console.WriteLine($"Good Value:{rnd.cardhead:0000}{rnd.cardid:000000000000000}");
                                     }
